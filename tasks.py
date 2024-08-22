@@ -1,12 +1,13 @@
 from robocorp.tasks import task
 from robocorp import browser
-import shutil
 
 from RPA.HTTP import HTTP
 from RPA.Tables import Tables 
 from RPA.PDF import PDF
 
 import time
+import shutil
+from pathlib import Path
 
 def get_orders():
     http = HTTP()
@@ -55,7 +56,9 @@ def next_order():
     page.click("button:text('ORDER ANOTHER ROBOT')")
 
 def archive_receipts(save_to, folder_to_archive):
-    shutil.make_archive(save_to+"/"+folder_to_archive, "zip", save_to, folder_to_archive)
+    base_dir = Path(__file__).parent
+    relative_path = base_dir / save_to / folder_to_archive
+    shutil.make_archive(relative_path, "zip", save_to, folder_to_archive)
 
 @task
 def order_robots_from_RobotSpareBin():
